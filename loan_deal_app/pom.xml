@@ -64,6 +64,31 @@
 			<version>13.0</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.18</version>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.6.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok-mapstruct-binding</artifactId>
+			<version>0.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -80,7 +105,7 @@
 						<configuration>
 							<inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
 							<generatorName>spring</generatorName>
-							<modelPackage>ru.nkashlev.loan_deal_app_app.deal.model</modelPackage>
+							<modelPackage>ru.nkashlev.loan_deal_app.deal.model</modelPackage>
 							<apiPackage>ru.nkashlev.loan_deal_app.deal.api</apiPackage>
 							<configOptions>
 								<sourceFolder>src/gen/java/main</sourceFolder>
@@ -116,6 +141,11 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+					<groupId>org.liquibase</groupId>
+				    <artifactId>liquibase-maven-plugin</artifactId>
+				    <version>3.6.3</version>
 			</plugin>
 		</plugins>
 	</build>

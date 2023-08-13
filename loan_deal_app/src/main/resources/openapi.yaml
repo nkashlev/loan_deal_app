@@ -312,3 +312,104 @@ components:
               example: 12
               description: Стаж работы на текущем месте (в месяцах)
 
+    ScoringDataDTO:
+      title: Scoring Data DTO
+      type: object
+      description: Модель для скоринга заемщика
+      required:
+        - amount
+        - term
+        - firstName
+        - lastName
+        - gender
+        - birthdate
+        - passportSeries
+        - passportNumber
+        - passportIssueDate
+        - passportIssueBranch
+        - maritalStatus
+        - dependentAmount
+        - employment
+        - account
+        - isInsuranceEnabled
+        - isSalaryClient
+      properties:
+        amount:
+          type: number
+          example: 1000000
+          minimum: 10000
+          description: Запрошенная сумма кредита
+        term:
+          type: integer
+          format: int64
+          example: 12
+          minimum: 6
+          description: Срок кредита в месяцах
+        firstName:
+          type: string
+          example: Jon
+          description: Имя заемщика
+        lastName:
+          type: string
+          example: Doy
+          description: Фамилия заемщика
+        middleName:
+          type: string
+          example: Jon
+          description: Отчество заемщика
+        Gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+            - NON_BINARY
+          description: Пол заемщика
+        birthdate:
+          type: string
+          format: date
+          example: 1996-08-03
+          description: Дата выдачи паспорта заемщика в формате ГГГГ-ММ-ДД
+        passportSeries:
+          type: string
+          example: 1234
+          description: Серия паспорта заемщика
+        passportNumber:
+          type: string
+          example: 123456
+          description: Номер паспорта заемщика
+        passportIssueDate:
+          type: string
+          format: date
+          example: 2010-10-03
+          description: Дата выдачи паспорта заемщика  в формате ГГГГ-ММ-ДД
+        passportIssueBranch:
+          type: string
+          example: New York
+          description: Место выдачи паспорта заемщика
+        MaritalStatus:
+          type: string
+          enum:
+            - SINGLE
+            - MARRIED
+            - DIVORCED
+            - WIDOWED
+          description: Семейное положение заемщика
+        dependentAmount:
+          type: integer
+          format: int64
+          example: 2
+          description: Количество иждивенцев у заемщика
+        employment:
+          $ref: '#/components/schemas/EmploymentDTO'
+        account:
+          type: string
+          example: 0000000000000,
+          description: Номер банковского счета у заемщика
+        isInsuranceEnabled:
+          type: boolean
+          example: true
+          description: Флаг, указывающий, включена ли страховка
+        isSalaryClient:
+          type: boolean
+          example: true
+          description: Флаг, указывающий, включена ли страховка
