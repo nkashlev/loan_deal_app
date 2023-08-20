@@ -11,29 +11,29 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="amount" type="decimal(10,2)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="term" type="int">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="monthly_payment" type="decimal(10,2)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="rate" type="decimal(5,2)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="psl" type="decimal(10,2)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="payment_schedule" type="jsonb"/>
             <column name="insurance_enable" type="boolean">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="salary_client" type="boolean">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="credit_status" type="varchar(20)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>

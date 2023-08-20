@@ -10,16 +10,16 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="client_id" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="credit_id" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="status" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="creation_date" type="TIMESTAMP">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="applied_offer" type="JSONB"/>
             <column name="sign_date" type="TIMESTAMP"/>
