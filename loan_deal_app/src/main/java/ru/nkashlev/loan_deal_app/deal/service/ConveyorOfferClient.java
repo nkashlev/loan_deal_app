@@ -8,8 +8,8 @@ import ru.nkashlev.loan_deal_app.deal.model.LoanOfferDTO;
 
 import java.util.List;
 
-@FeignClient(name = "conveyor", url = "http://localhost:8081/conveyor")
-public interface ConveyorClient {
+@FeignClient(name = "conveyorOffers", url = "http://localhost:8081/conveyor")
+public interface ConveyorOfferClient {
     @PostMapping("/offers")
     List<LoanOfferDTO> calculateLoanOffers(@RequestBody LoanApplicationRequestDTO request);
 }

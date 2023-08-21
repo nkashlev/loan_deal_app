@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
-import ru.nkashlev.loan_deal_app.deal.entity.util.StatusHistory;
 import ru.nkashlev.loan_deal_app.deal.model.ApplicationStatusHistoryDTO;
+import ru.nkashlev.loan_deal_app.deal.model.LoanOfferDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,7 +31,7 @@ public class Application {
 
     @Type(type = "jsonb")
     @Column(name = "applied_offer")
-    private String applied_offer; /// applied_offer jsonb, но в таблице нет ссылки на др таблицу //todo
+    private LoanOfferDTO applied_offer;
 
     @Column(name = "sign_date")
     private LocalDate sign_date;
@@ -40,7 +41,7 @@ public class Application {
 
     @Type(type = "jsonb")
     @Column(name = "status_history")
-    private StatusHistory status_history;
+    private List<ApplicationStatusHistoryDTO> status_history;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")

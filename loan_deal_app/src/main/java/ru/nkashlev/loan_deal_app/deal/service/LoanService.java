@@ -18,11 +18,11 @@ public class LoanService {
 
     private final ClientRepository clientRepository;
     private final ApplicationRepository applicationRepository;
-    private final ConveyorClient conveyorClient;
+    private final ConveyorOfferClient conveyorOfferClient;
     private final Client client = new Client();
 
     public List<LoanOfferDTO> applyLoan(LoanApplicationRequestDTO request) {
-        List<LoanOfferDTO> offers = conveyorClient.calculateLoanOffers(request);
+        List<LoanOfferDTO> offers = conveyorOfferClient.calculateLoanOffers(request);
         saveClient(request);
         saveApplication(offers);
         return offers;
