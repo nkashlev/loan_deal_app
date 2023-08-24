@@ -7,7 +7,7 @@
     <changeSet author="nkashlev" id="create_application_table" >
         <createTable tableName="application">
             <column name="application_id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="true"/>
             </column>
             <column name="client_id" type="BIGINT">
                 <constraints nullable="true"/>

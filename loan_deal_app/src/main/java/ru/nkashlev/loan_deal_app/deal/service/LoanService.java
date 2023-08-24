@@ -46,7 +46,7 @@ public class LoanService {
             Application application = new Application();
             application.setClient(client);
             applicationRepository.save(application);
-            loanOffer.setApplicationId(application.getApplication_id());
+            loanOffer.setApplicationId(application.getApplicationId());
         }
     }
 }

@@ -11,6 +11,7 @@ import ru.nkashlev.loan_deal_app.deal.repositories.ApplicationRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,23 +19,37 @@ public class OfferService {
     private final ApplicationRepository applicationRepository;
 
     public void updateApplication(LoanOfferDTO request) throws ResourceNotFoundException {
-        Application application = applicationRepository.findById(request.getApplicationId()).orElse(null);
-        if (application == null) {
+
+        if (request.getApplicationId() == null) {
+            throw new IllegalArgumentException("Application id cannot be null");
+        }
+
+        Optional<Application> optionalApplication = applicationRepository.findById(request.getApplicationId());
+        if (optionalApplication.isPresent()) {
+            Application application = optionalApplication.get();
+            application.setStatus(ApplicationStatusHistoryDTO.StatusEnum.PREAPPROVAL);
+
+            // Обновление истории статусов заявки
+            List<ApplicationStatusHistoryDTO> applicationStatusHistoryDTOList = new ArrayList<>();
+            ApplicationStatusHistoryDTO statusHistory = new ApplicationStatusHistoryDTO();
+            statusHistory.setStatus(ApplicationStatusHistoryDTO.StatusEnum.PREAPPROVAL);
+            statusHistory.setTime(LocalDate.now());
+            statusHistory.setChangeType(ApplicationStatusHistoryDTO.ChangeTypeEnum.AUTOMATIC);
+            applicationStatusHistoryDTOList.add(statusHistory);
+            application.setStatusHistory(applicationStatusHistoryDTOList);
+            application.setAppliedOffer(request);
+            applicationRepository.save(application);
+        } else {
             throw new ResourceNotFoundException("Cannot find application with id: " + request.getApplicationId());
         }
-        // Обновление статуса заявки
-        application.setStatus(ApplicationStatusHistoryDTO.StatusEnum.PREAPPROVAL);
 
-        List<ApplicationStatusHistoryDTO> applicationStatusHistoryDTOList = new ArrayList<>();
-        // Обновление истории статусов заявки
-        ApplicationStatusHistoryDTO statusHistory = new ApplicationStatusHistoryDTO();
-        statusHistory.setStatus(ApplicationStatusHistoryDTO.StatusEnum.PREAPPROVAL);
-        statusHistory.setTime(LocalDate.now());
-        statusHistory.setChangeType(ApplicationStatusHistoryDTO.ChangeTypeEnum.AUTOMATIC);
-        applicationStatusHistoryDTOList.add(statusHistory);
-        application.setStatus_history(applicationStatusHistoryDTOList);
-        application.setApplied_offer(request);
-        applicationRepository.save(application);
+
+//        Application application = applicationRepository.findById(request.getApplicationId()).orElse(null);
+//        if (application == null) {
+//            throw new ResourceNotFoundException("Cannot find application with id: " + request.getApplicationId());
+//        }
+        // Обновление статуса заявки
+
     }
 }
 

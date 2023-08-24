@@ -19,13 +19,12 @@ public class LoanCalculateController implements DefaultApi {
 
 
     @Override
-    public ResponseEntity<Void> dealCalculateApplicationIdPut(@RequestBody FinishRegistrationRequestDTO request, @PathVariable Long id) {
+    public ResponseEntity<Void> dealCalculateApplicationIdPut(@PathVariable("application_id") Long applicationId, @RequestBody FinishRegistrationRequestDTO request) {
         try {
-            calculateService.finishRegistration(request, id);
+            calculateService.finishRegistration(applicationId, request);
             return ResponseEntity.ok().build();
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // return 404, with null body
         }
-
     }
 }

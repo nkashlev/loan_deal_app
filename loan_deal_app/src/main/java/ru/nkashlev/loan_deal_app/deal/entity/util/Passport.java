@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class Passport {
+public class Passport implements Serializable {
     private String series;
     private String number;
     private String issue_branch;

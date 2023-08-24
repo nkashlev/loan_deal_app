@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.nkashlev.loan_deal_app.deal.model.EmploymentDTO;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class Employment {
+public class Employment implements Serializable {
     private EmploymentDTO.EmploymentStatusEnum status;
     private String employer_inn;
     private BigDecimal salary;

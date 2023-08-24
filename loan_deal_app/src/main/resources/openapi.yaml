@@ -43,13 +43,12 @@ paths:
       responses:
         200:
           description: success
-
-  /deal/calculate/{applicationId}:
+  /deal/calculate/{application_id}:
     put:
       summary: Завершение регистрации и подсчёт кредита
       description: Метод для завершения регистрации и получения полной информации о кредите
       parameters:
-        - name: applicationId
+        - name: application_id
           in: path
           description: Идентификатор заявки на кредит
           required: true
@@ -66,11 +65,6 @@ paths:
       responses:
         '200':
           description: Успешное завершение регистрации и подсчёт кредита
-        '400':
-          description: Ошибка при неверном запросе
-        '404':
-          description: Заявка на кредит не найдена
-
 components:
   schemas:
     LoanApplicationRequestDTO:
@@ -215,7 +209,6 @@ components:
             enum:
               - automatic
               - manual
-              -
     FinishRegistrationRequestDTO:
         title: Finish Registration Request DTO
         type: object
@@ -428,7 +421,7 @@ components:
           description: Сумма кредита
         term:
           type: integer
-          format: int64
+          format: int32
           example: 12
           description: Срок кредита в месяцах
         monthlyPayment:
