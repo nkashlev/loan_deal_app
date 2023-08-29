@@ -1,22 +1,23 @@
 package ru.nkashlev.loan_deal_app.deal.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
-import ru.nkashlev.loan_deal_app.deal.entity.util.Employment;
+import org.hibernate.annotations.TypeDef;
 import ru.nkashlev.loan_deal_app.deal.entity.util.Passport;
+import ru.nkashlev.loan_deal_app.deal.model.EmploymentDTO;
 import ru.nkashlev.loan_deal_app.deal.model.ScoringDataDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
+
+@Data
 @Entity
 @Table(name = "Client")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,11 +56,12 @@ public class Client {
 
     @Type(type = "jsonb")
     @Column(name = "employment")
-    private Employment employment;
+    private EmploymentDTO employment;
 
     @Column(name = "account")
     private String account;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private List<Application> applications;
 }

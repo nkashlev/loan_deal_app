@@ -1,10 +1,12 @@
 package ru.nkashlev.loan_deal_app.deal.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
-import ru.nkashlev.loan_deal_app.deal.entity.util.StatusHistory;
+import org.hibernate.annotations.TypeDef;
 import ru.nkashlev.loan_deal_app.deal.model.ApplicationStatusHistoryDTO;
 import ru.nkashlev.loan_deal_app.deal.model.LoanOfferDTO;
 
@@ -12,11 +14,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
 @Entity
 @Table(name = "Application")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,13 +43,17 @@ public class Application {
 
     @Type(type = "jsonb")
     @Column(name = "status_history")
-    private List<ApplicationStatusHistoryDTO> statusHistory;
+    private List<ApplicationStatusHistoryDTO> statusHistory = List.of(new ApplicationStatusHistoryDTO());
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
+    @Fetch(FetchMode.JOIN)
     private Client client;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "credit_id", referencedColumnName = "credit_id")
+    @Fetch(FetchMode.JOIN)
     private Credit credit;
 }

@@ -1,19 +1,20 @@
 package ru.nkashlev.loan_deal_app.deal.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.*;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import ru.nkashlev.loan_deal_app.deal.entity.util.CreditStatus;
+import ru.nkashlev.loan_deal_app.deal.model.PaymentScheduleElement;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
 @Entity
 @Table(name = "Credit")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +31,8 @@ public class Credit {
     @Column(name = "psk")
     private BigDecimal psk;
     @Type(type = "jsonb")
-    @Column(name = "payment_schedule")/// payment_schedule jsonb, но в таблице нет ссылки на др таблицу.
-    private String payment_schedule;
+    @Column(name = "payment_schedule")
+    private List<PaymentScheduleElement> payment_schedule;
     @Column(name = "insurance_enable")
     private Boolean insurance_enable;
     @Column(name = "salary_client")
@@ -39,5 +40,6 @@ public class Credit {
     @Column(name = "credit_status")
     private CreditStatus credit_status;
     @OneToOne(mappedBy = "credit", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private Application application;
 }

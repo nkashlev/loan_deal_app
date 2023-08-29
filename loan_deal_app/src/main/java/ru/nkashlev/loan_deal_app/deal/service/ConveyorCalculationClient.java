@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.nkashlev.loan_deal_app.deal.model.CreditDTO;
 import ru.nkashlev.loan_deal_app.deal.model.ScoringDataDTO;
 
-@FeignClient(name = "conveyorCalculation", url = "http://localhost:8081/conveyor")
+@FeignClient(name = "LoanCalculation", url = "http://localhost:8081/conveyor")
 public interface ConveyorCalculationClient {
     @PostMapping("/calculation")
     CreditDTO calculateLoanOffers(@RequestBody ScoringDataDTO request);
 }
+

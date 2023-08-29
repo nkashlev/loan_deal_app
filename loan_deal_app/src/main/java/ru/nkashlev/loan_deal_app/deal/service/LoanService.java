@@ -1,6 +1,8 @@
 package ru.nkashlev.loan_deal_app.deal.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.nkashlev.loan_deal_app.deal.entity.Application;
 import ru.nkashlev.loan_deal_app.deal.entity.Client;
@@ -19,12 +21,14 @@ public class LoanService {
     private final ClientRepository clientRepository;
     private final ApplicationRepository applicationRepository;
     private final ConveyorOfferClient conveyorOfferClient;
+    private final Logger LOGGER = LoggerFactory.getLogger(LoanService.class);
     private final Client client = new Client();
 
-    public List<LoanOfferDTO> applyLoan(LoanApplicationRequestDTO request) {
+    public List<LoanOfferDTO> createApplication(LoanApplicationRequestDTO request) {
         List<LoanOfferDTO> offers = conveyorOfferClient.calculateLoanOffers(request);
         saveClient(request);
         saveApplication(offers);
+        LOGGER.info("New loan application created for client with email: {}", request.getEmail());
         return offers;
     }
 
@@ -39,6 +43,7 @@ public class LoanService {
         passport.setSeries(request.getPassportSeries());
         client.setPassport(passport);
         clientRepository.save(client);
+        LOGGER.info("New client created with email: {}", request.getEmail());
     }
 
     private void saveApplication(List<LoanOfferDTO> offers) {
@@ -47,6 +52,7 @@ public class LoanService {
             application.setClient(client);
             applicationRepository.save(application);
             loanOffer.setApplicationId(application.getApplicationId());
+            LOGGER.info("New application saved with ID: {}", application.getApplicationId());
         }
     }
 }

@@ -18,6 +18,6 @@ public class LoanApplicationController implements ApplicationApi {
     private final LoanService loanService;
     @Override
     public ResponseEntity<List<LoanOfferDTO>> loanApplication(@RequestBody LoanApplicationRequestDTO request) {
-        return ResponseEntity.ok(loanService.applyLoan(request));
+        return ResponseEntity.ok(loanService.createApplication(request));
     }
 }

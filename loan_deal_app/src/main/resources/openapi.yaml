@@ -181,123 +181,123 @@ components:
           description: Флаг, указывающий, включена ли страховка
 
     ApplicationStatusHistoryDTO:
-        title: Application Status History DTO
-        type: object
-        description: Модель для скоринга заемщика
-        required:
-          - status
-          - time
-          - changeType
-        properties:
-          status:
-            type: string
-            enum:
-              - preapproval
-              - approved
-              - cc_denied
-              - cc_approved
-              - prepare_documents
-              - document_created
-              - client_denied
-              - document_signed
-              - credit_issued
-          time:
-            type: string
-            format: date
-          changeType:
-            type: string
-            enum:
-              - automatic
-              - manual
+      title: Application Status History DTO
+      type: object
+      description: Модель для скоринга заемщика
+      required:
+        - status
+        - time
+        - changeType
+      properties:
+        status:
+          type: string
+          enum:
+            - preapproval
+            - approved
+            - cc_denied
+            - cc_approved
+            - prepare_documents
+            - document_created
+            - client_denied
+            - document_signed
+            - credit_issued
+        time:
+          type: string
+          format: date
+        changeType:
+          type: string
+          enum:
+            - automatic
+            - manual
     FinishRegistrationRequestDTO:
-        title: Finish Registration Request DTO
-        type: object
-        required:
-          - gender
-          - maritalStatus
-          - dependentAmount
-          - passportIssueDate
-          - passportIssueBrach
-          - employment
-          - account
-        properties:
-          Gender:
-            type: string
-            enum:
+      title: Finish Registration Request DTO
+      type: object
+      required:
+        - gender
+        - maritalStatus
+        - dependentAmount
+        - passportIssueDate
+        - passportIssueBrach
+        - employment
+        - account
+      properties:
+        Gender:
+          type: string
+          enum:
             - MALE
             - FEMALE
             - NON_BINARY
-            description: Пол заемщика
-          MaritalStatus:
-            type: string
-            enum:
-              - SINGLE
-              - MARRIED
-              - DIVORCED
-              - WIDOWED
-            description: Семейное положение заемщика
-          dependentAmount:
-            type: integer
-            format: int64
-            example: 2
-            description: Количество иждивенцев у заемщика
-          passportIssueDate:
-            type: string
-            format: date
-            example: 2010-10-03
-            description: Дата выдачи паспорта заемщика  в формате ГГГГ-ММ-ДД
-          passportIssueBranch:
-            type: string
-            example: New York
-            description: Место выдачи паспорта заемщика
-          employment:
-            $ref: '#/components/schemas/EmploymentDTO'
-          account:
-            type: string
-            example: 0000000000000,
-            description: Номер банковского счета у заемщика
+          description: Пол заемщика
+        MaritalStatus:
+          type: string
+          enum:
+            - SINGLE
+            - MARRIED
+            - DIVORCED
+            - WIDOWED
+          description: Семейное положение заемщика
+        dependentAmount:
+          type: integer
+          format: int64
+          example: 2
+          description: Количество иждивенцев у заемщика
+        passportIssueDate:
+          type: string
+          format: date
+          example: 2010-10-03
+          description: Дата выдачи паспорта заемщика  в формате ГГГГ-ММ-ДД
+        passportIssueBranch:
+          type: string
+          example: New York
+          description: Место выдачи паспорта заемщика
+        employment:
+          $ref: '#/components/schemas/EmploymentDTO'
+        account:
+          type: string
+          example: 0000000000000,
+          description: Номер банковского счета у заемщика
 
     EmploymentDTO:
-          title: Scoring Data DTO
-          type: object
-          description: Модель для скоринга заемщика
-          properties:
-            employmentStatus:
-              type: string
-              enum:
-                - UNEMPLOYED
-                - SELF_EMPLOYED
-                - BUSINESS_OWNER
-                - EMPLOYED
-              example: EMPLOYED
-              description: Статус занятости
-            employerINN:
-              type: string
-              example: 0000000000
-              description: ИНН работодателя
-            salary:
-              type: number
-              example: 100000
-              description: Заработная плата
-            position:
-              type: string
-              enum:
-                - MANAGER
-                - TOP_MANAGER
-                - ENGINEER
-                - OTHER
-              example: ENGINEER
-              description: Должность
-            workExperienceTotal:
-              type: integer
-              format: int64
-              example: 24
-              description: Общий стаж работы (в месяцах)
-            workExperienceCurrent:
-              type: integer
-              format: int64
-              example: 12
-              description: Стаж работы на текущем месте (в месяцах)
+      title: Scoring Data DTO
+      type: object
+      description: Модель для скоринга заемщика
+      properties:
+        employmentStatus:
+          type: string
+          enum:
+            - UNEMPLOYED
+            - SELF_EMPLOYED
+            - BUSINESS_OWNER
+            - EMPLOYED
+          example: EMPLOYED
+          description: Статус занятости
+        employerINN:
+          type: string
+          example: 0000000000
+          description: ИНН работодателя
+        salary:
+          type: number
+          example: 100000
+          description: Заработная плата
+        position:
+          type: string
+          enum:
+            - MANAGER
+            - TOP_MANAGER
+            - ENGINEER
+            - OTHER
+          example: ENGINEER
+          description: Должность
+        workExperienceTotal:
+          type: integer
+          format: int64
+          example: 24
+          description: Общий стаж работы (в месяцах)
+        workExperienceCurrent:
+          type: integer
+          format: int64
+          example: 12
+          description: Стаж работы на текущем месте (в месяцах)
 
     ScoringDataDTO:
       title: Scoring Data DTO
