@@ -11,6 +11,7 @@ import ru.nkashlev.loan_deal_app.deal.model.LoanOfferDTO;
 import ru.nkashlev.loan_deal_app.deal.repositories.ApplicationRepository;
 import ru.nkashlev.loan_deal_app.deal.repositories.ClientRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +54,12 @@ public class LoanServiceTest {
     public void testCreateApplication() {
         List<LoanOfferDTO> offers = new ArrayList<>();
         LoanOfferDTO offer1 = new LoanOfferDTO();
-        offer1.setAmount(10000);
-        offer1.setInterestRate(0.05);
+        offer1.setTotalAmount(new BigDecimal("10000"));
+        offer1.setRate(new BigDecimal("0.05"));
         offers.add(offer1);
         LoanOfferDTO offer2 = new LoanOfferDTO();
-        offer2.setAmount(20000);
-        offer2.setInterestRate(0.06);
+        offer2.setTotalAmount(new BigDecimal("20000"));
+        offer2.setRate(new BigDecimal("0.06"));
         offers.add(offer2);
 
         when(conveyorOfferClient.calculateLoanOffers(any(LoanApplicationRequestDTO.class))).thenReturn(offers);
