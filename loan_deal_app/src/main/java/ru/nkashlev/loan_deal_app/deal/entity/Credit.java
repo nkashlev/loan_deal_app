@@ -37,6 +37,7 @@ public class Credit {
     private Boolean insurance_enable;
     @Column(name = "salary_client")
     private Boolean salary_client;
+    @Enumerated(EnumType.STRING)
     @Column(name = "credit_status")
     private CreditStatus credit_status;
     @OneToOne(mappedBy = "credit", cascade = CascadeType.ALL, orphanRemoval = true)

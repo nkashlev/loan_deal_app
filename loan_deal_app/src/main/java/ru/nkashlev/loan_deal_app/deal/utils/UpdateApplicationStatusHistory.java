@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.nkashlev.loan_deal_app.deal.entity.Application;
+import ru.nkashlev.loan_deal_app.deal.entity.Credit;
 import ru.nkashlev.loan_deal_app.deal.model.ApplicationStatusHistoryDTO;
 import ru.nkashlev.loan_deal_app.deal.repositories.ApplicationRepository;
 
@@ -28,6 +29,18 @@ public class UpdateApplicationStatusHistory {
         statusHistory.setTime(LocalDate.now());
         statusHistory.setChangeType(changeType);
         application.getStatusHistory().add(statusHistory);
+        applicationRepository.save(application);
+    }
+
+    public void updateApplicationStatusHistory(Application application, StatusEnum status, ChangeTypeEnum changeType, Credit credit) {
+        LOGGER.info("Started to update application with id: {}", application.getApplicationId());
+        application.setStatus(status);
+        ApplicationStatusHistoryDTO statusHistory = new ApplicationStatusHistoryDTO();
+        statusHistory.setStatus(status);
+        statusHistory.setTime(LocalDate.now());
+        statusHistory.setChangeType(changeType);
+        application.getStatusHistory().add(statusHistory);
+        application.setCredit(credit);
         applicationRepository.save(application);
     }
 }

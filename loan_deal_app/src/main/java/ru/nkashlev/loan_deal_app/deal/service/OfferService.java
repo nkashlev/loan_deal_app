@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.nkashlev.loan_deal_app.deal.entity.Application;
+import ru.nkashlev.loan_deal_app.deal.entity.Credit;
 import ru.nkashlev.loan_deal_app.deal.exceptions.ResourceNotFoundException;
 import ru.nkashlev.loan_deal_app.deal.model.LoanOfferDTO;
 import ru.nkashlev.loan_deal_app.deal.repositories.ApplicationRepository;

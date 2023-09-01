@@ -22,17 +22,16 @@ public class LoanService {
     private final ApplicationRepository applicationRepository;
     private final ConveyorOfferClient conveyorOfferClient;
     private final Logger LOGGER = LoggerFactory.getLogger(LoanService.class);
-    private final Client client = new Client();
 
     public List<LoanOfferDTO> createApplication(LoanApplicationRequestDTO request) {
         List<LoanOfferDTO> offers = conveyorOfferClient.calculateLoanOffers(request);
-        saveClient(request);
-        saveApplication(offers);
+        saveApplication(offers, saveClient(request));
         LOGGER.info("New loan application created for client with email: {}", request.getEmail());
         return offers;
     }
 
-    private void saveClient(LoanApplicationRequestDTO request) {
+    private Client saveClient(LoanApplicationRequestDTO request) {
+        Client client = new Client();
         client.setFirst_name(request.getFirstName());
         client.setMiddle_name(request.getMiddleName());
         client.setLast_name(request.getLastName());
@@ -44,9 +43,10 @@ public class LoanService {
         client.setPassport(passport);
         clientRepository.save(client);
         LOGGER.info("New client created with email: {}", request.getEmail());
+        return client;
     }
 
-    private void saveApplication(List<LoanOfferDTO> offers) {
+    private void saveApplication(List<LoanOfferDTO> offers, Client client) {
         for (LoanOfferDTO loanOffer : offers) {
             Application application = new Application();
             application.setClient(client);

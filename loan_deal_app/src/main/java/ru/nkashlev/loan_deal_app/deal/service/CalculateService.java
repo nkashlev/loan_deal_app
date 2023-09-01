@@ -16,9 +16,6 @@ import ru.nkashlev.loan_deal_app.deal.repositories.CreditRepository;
 import ru.nkashlev.loan_deal_app.deal.utils.FindIdByApplication;
 import ru.nkashlev.loan_deal_app.deal.utils.UpdateApplicationStatusHistory;
 
-import java.math.BigDecimal;
-import java.util.Map;
-
 import static ru.nkashlev.loan_deal_app.deal.model.ApplicationStatusHistoryDTO.ChangeTypeEnum.AUTOMATIC;
 import static ru.nkashlev.loan_deal_app.deal.model.ApplicationStatusHistoryDTO.StatusEnum.APPROVED;
 import static ru.nkashlev.loan_deal_app.deal.model.ScoringDataDTO.GenderEnum.*;
@@ -40,17 +37,16 @@ public class CalculateService {
 
     public void finishRegistration(Long id, FinishRegistrationRequestDTO request) throws ResourceNotFoundException {
         Application application = new FindIdByApplication(applicationRepository).findIdByApplication(id);
-        ScoringDataDTO scoringDataDTO = setScoringDTO(new ScoringDataDTO(), application, request, id);
-        saveCredit(application, scoringDataDTO);
-        new UpdateApplicationStatusHistory(applicationRepository).updateApplicationStatusHistory(application, APPROVED, AUTOMATIC);
+        ScoringDataDTO scoringDataDTO = setScoringDTO(new ScoringDataDTO(), application, request);
+        Credit credit = saveCredit(application, scoringDataDTO);
+        new UpdateApplicationStatusHistory(applicationRepository).updateApplicationStatusHistory(application, APPROVED, AUTOMATIC, credit);
         LOGGER.info("Registration finished for application with ID {}: {}", id, request);
     }
 
-    private void saveCredit(Application application, ScoringDataDTO scoringDataDTO) {
+    private Credit saveCredit(Application application, ScoringDataDTO scoringDataDTO) {
+        long i = 0L;
         CreditDTO creditDTO = conveyorCalculationClient.calculateLoanOffers(scoringDataDTO);
         Credit credit = new Credit();
-        credit.setApplication(application);
-        credit.setCredit_id(application.getApplicationId());
         credit.setAmount(creditDTO.getAmount());
         credit.setTerm(creditDTO.getTerm());
         credit.setMonthly_payment(creditDTO.getMonthlyPayment());
@@ -61,11 +57,11 @@ public class CalculateService {
         credit.setSalary_client(creditDTO.isIsSalaryClient());
         credit.setCredit_status(CreditStatus.CALCULATED);
         creditRepository.save(credit);
-        LOGGER.info("Credit saved for application with ID {}: {}", application.getApplicationId(), credit);
+        LOGGER.info("Credit saved for application with ID {}", application.getApplicationId());
+        return credit;
     }
 
-
-    private ScoringDataDTO setScoringDTO(ScoringDataDTO scoringDataDTO, Application application, FinishRegistrationRequestDTO request, Long id) {
+    private ScoringDataDTO setScoringDTO(ScoringDataDTO scoringDataDTO, Application application, FinishRegistrationRequestDTO request) {
         scoringDataDTO.setLastName(application.getClient().getLast_name());
         scoringDataDTO.setFirstName(application.getClient().getFirst_name());
         scoringDataDTO.setMiddleName(application.getClient().getMiddle_name());
@@ -79,10 +75,10 @@ public class CalculateService {
         scoringDataDTO.setPassportIssueBranch(request.getPassportIssueBranch());
         scoringDataDTO.setEmployment(request.getEmployment());
         scoringDataDTO.setAccount(request.getAccount());
-        scoringDataDTO.isSalaryClient(isSalaryClientApplication(id));
-        scoringDataDTO.isInsuranceEnabled(isInsuranceEnabledApplication(id));
-        scoringDataDTO.setAmount(getAmountApplication(id));
-        scoringDataDTO.setTerm(getTermApplication(id));
+        scoringDataDTO.isSalaryClient(application.getAppliedOffer().isIsSalaryClient());
+        scoringDataDTO.isInsuranceEnabled(application.getAppliedOffer().isIsInsuranceEnabled());
+        scoringDataDTO.setAmount(application.getAppliedOffer().getRequestedAmount());
+        scoringDataDTO.setTerm(application.getAppliedOffer().getTerm());
         LOGGER.info("ScoringDataDTO saved");
         return scoringDataDTO;
     }
@@ -94,6 +90,7 @@ public class CalculateService {
             case NON_BINARY -> scoringDataDTO.setGender(NON_BINARY);
         }
     }
+
     private void setMaritalStatus(FinishRegistrationRequestDTO request, ScoringDataDTO scoringDataDTO) {
         switch (request.getMaritalStatus()) {
             case SINGLE -> scoringDataDTO.setMaritalStatus(SINGLE);
@@ -101,25 +98,5 @@ public class CalculateService {
             case DIVORCED -> scoringDataDTO.setMaritalStatus(DIVORCED);
             case WIDOWED -> scoringDataDTO.setMaritalStatus(WIDOWED);
         }
-    }
-
-    private Boolean isSalaryClientApplication(Long id) {
-        Map<String, Object> appliedOfferIsSalaryClient = applicationRepository.getAppliedOfferIsSalaryClient(id);
-        return appliedOfferIsSalaryClient.get("isSalaryClient").equals(true);
-    }
-
-    private Boolean isInsuranceEnabledApplication(Long id) {
-        Map<String, Object> appliedOfferIsInsuranceEnabled = applicationRepository.getAppliedOfferIsInsuranceEnabled(id);
-        return appliedOfferIsInsuranceEnabled.get("isInsuranceEnabled").equals(true);
-    }
-
-    private BigDecimal getAmountApplication(Long id) {
-        Map<String, Object> appliedOfferAmount = applicationRepository.getAppliedOfferRequestedAmount(id);
-        return new BigDecimal(String.valueOf(appliedOfferAmount.get("requestedAmount")));
-    }
-
-    private Long getTermApplication(Long id) {
-        Map<String, Object> appliedOfferTerm = applicationRepository.getAppliedOfferTerm(id);
-        return Long.valueOf(String.valueOf(appliedOfferTerm.get("term")));
     }
 }
