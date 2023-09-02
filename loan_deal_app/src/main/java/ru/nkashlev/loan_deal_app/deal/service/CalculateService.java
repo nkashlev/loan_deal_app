@@ -44,7 +44,6 @@ public class CalculateService {
     }
 
     private Credit saveCredit(Application application, ScoringDataDTO scoringDataDTO) {
-        long i = 0L;
         CreditDTO creditDTO = conveyorCalculationClient.calculateLoanOffers(scoringDataDTO);
         Credit credit = new Credit();
         credit.setAmount(creditDTO.getAmount());
